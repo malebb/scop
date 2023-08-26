@@ -3,7 +3,8 @@ CC = gcc
 
 SRC = ./source/main.cpp \
 	  ./source/app/app.cpp \
-	  ./source/window/window.cpp
+	  ./source/window/Window.cpp \
+	  ./source/parser/ObjParser.cpp
 
 INC = -I./source/app \
 	  -I./source/window
@@ -50,7 +51,7 @@ init_linux:
 
 	# Compile glfw library
 	sudo apt install cmake
-	cmake -S ./glfw -B ./glfw/build
+	cmake -S $(GLFW) -B $(GLFW)/build
 	make -C $(GLFW_LIB)
 
 	# Compile glad library
