@@ -1,13 +1,14 @@
 #pragma once
 
 #include <memory>
+#include "ObjParser.h"
 
 namespace SCOP
 {
 	struct AppConstants
 	{
-		static constexpr auto openGLMajorVersion = 3;
-		static constexpr auto openGLMinorVersion = 3;
+		static constexpr auto openGLMajorVersion = 4;
+		static constexpr auto openGLMinorVersion = 6;
 	};
 
 	class Application
@@ -18,5 +19,6 @@ namespace SCOP
 		private:
 			Application(int argc, char **argv);
 			static std::unique_ptr<Application> m_application;
+            ObjParser m_3dParser;
 	};
 }

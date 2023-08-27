@@ -4,14 +4,18 @@
 #include "Window.h"
 
 using SCOP::Application;
+using SCOP::ObjParser;
 
 std::unique_ptr<Application> Application::m_application = nullptr;
 
 Application::Application(int argc, char **argv)
 {
-	(void)argc;
-	(void)argv;
-
+    if (argc != 2)
+    {
+        throw("Usage: ./scop <3dFile.obj>");
+    }
+    m_3dParser = ObjParser(argv[1]);
+    m_3dParser.printParsedFile();
 }
 
 std::unique_ptr<Application>& Application::initApplication(int argc, char **argv)

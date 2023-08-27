@@ -2,6 +2,14 @@
 
 int main(int argc, char **argv)
 {
-	SCOP::Application::initApplication(argc, argv)->launchGameLoop();
+    try
+    {
+        auto& app = SCOP::Application::initApplication(argc, argv);
+        app->launchGameLoop();
+    }
+    catch (const char* err)
+    {
+        std::cerr << err << std::endl;
+    }
 	return 0;
 }

@@ -7,7 +7,8 @@ SRC = ./source/main.cpp \
 	  ./source/parser/ObjParser.cpp
 
 INC = -I./source/app \
-	  -I./source/window
+	  -I./source/window \
+	  -I./source/parser
 
 OBJ = $(SRC:.cpp=.o)
 
