@@ -2,6 +2,9 @@
 3D object viewer developed with C++ and OpenGL
 
 ## Usage
-- `make init_linux` (Only the first time)
-- `make`
-- `./scop path_to_3d_obj.obj` 
+```bash
+# Init the project (on first use)
+make init_linux
+# Build and execute
+make && ./scop 3d.obj
+```
