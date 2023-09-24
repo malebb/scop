@@ -4,11 +4,13 @@ CC = gcc
 SRC = ./source/main.cpp \
 	  ./source/app/app.cpp \
 	  ./source/window/Window.cpp \
-	  ./source/parser/ObjParser.cpp
+	  ./source/parser/ObjParser.cpp \
+	  ./source/shader/Shader.cpp
 
 INC = -I./source/app \
 	  -I./source/window \
-	  -I./source/parser
+	  -I./source/parser \
+	  -I./source/shader
 
 OBJ = $(SRC:.cpp=.o)
 
@@ -57,6 +59,7 @@ init_linux:
 
 	# Compile glad library
 	$(CC) -c $(GLAD_SRC)/glad.c -I $(GLAD_INC) -o $(GLAD_SRC)/glad.o
+	mkdir -p $(GLAD_LIB)
 	ar rcs $(GLAD_LIB)/libglad.a $(GLAD_SRC)/glad.o
 
 .PHONY: clean

@@ -1,4 +1,5 @@
 #include "app.h"
+#include <exception>
 
 int main(int argc, char **argv)
 {
@@ -7,9 +8,9 @@ int main(int argc, char **argv)
         auto& app = SCOP::Application::initApplication(argc, argv);
         app->launchGameLoop();
     }
-    catch (const char* err)
+    catch (const std::exception& err)
     {
-        std::cerr << err << std::endl;
+        std::cout << err.what() << std::endl;
     }
 	return 0;
 }

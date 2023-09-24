@@ -15,14 +15,14 @@ ObjParser::ObjParser(const std::string& t_objPath)
     constexpr std::string_view objExt = ".obj";
     if (t_objPath.substr(t_objPath.size() - objExt.size()).compare(".obj"))
     {
-        throw("Error: Wrong file extension ==> only .obj");
+        throw(std::invalid_argument("Error: Wrong file extension ==> only .obj"));
     }
     std::ifstream objFile;
 
     objFile.open(t_objPath, std::ifstream::in);
     if (!objFile.is_open())
     {
-        throw("Error: The .obj file could not be found");
+        throw(std::invalid_argument("Error: The .obj file could not be found"));
     }
     parseFile(objFile);
 }
