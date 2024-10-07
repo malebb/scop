@@ -10,7 +10,8 @@ SRC = ./source/main.cpp \
 INC = -I./source/app \
 	  -I./source/window \
 	  -I./source/parser \
-	  -I./source/shader
+	  -I./source/shader \
+	  -I./source/math
 
 OBJ = $(SRC:.cpp=.o)
 
@@ -20,7 +21,7 @@ INCLUDES = -I$(GLFW_INC) -I $(GLAD_INC) $(INC)
 GLFW_LIBRARY = -L$(GLFW_LIB)
 GLAD_LIBRARY = -L$(GLAD_LIB)
 
-CXXFLAGS = -Wall -Werror -Wextra -std=c++17 $(INCLUDES)
+CXXFLAGS = -Wall -Werror -Wextra -std=c++17 $(INCLUDES) -g
 LDFLAGS = $(GLFW_LIBRARY) -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi -ldl $(GLAD_LIBRARY) -lglad
 
 

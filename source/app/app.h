@@ -17,7 +17,7 @@ namespace SCOP
 			[[nodiscard]] static std::unique_ptr<Application>& initApplication(int argc, char **argv);
 			void launchGameLoop();
 		private:
-			Application(int argc, char **argv);
+			Application(char **argv);
 			static std::unique_ptr<Application> m_application;
             ObjParser m_3dParser;
 	};

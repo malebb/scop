@@ -75,20 +75,28 @@ void ObjParser::parseLine(const std::string& t_line)
 
 void ObjParser::parseVertexData(VertexType t_vertexType, std::istringstream& t_ss)
 {
-        Vertex vertexData;
-        t_ss >> vertexData.x;
-        t_ss >> vertexData.y;
-        t_ss >> vertexData.z;
+        Math::vec3 pos;
+        Math::vec2 texCoord;
+        Math::vec3 normal;
+
         switch (t_vertexType)
         {
             case VertexType::position:
-                m_posVertex.push_back(vertexData);
+                    t_ss >> pos.x;
+                    t_ss >> pos.y;
+                    t_ss >> pos.z;
+                    m_positions.push_back(pos);
                 break;
             case VertexType::texture:
-                m_textVertex.push_back(vertexData);
+                    t_ss >> texCoord.x;
+                    t_ss >> texCoord.y;
+                    m_textCoords.push_back(texCoord);
                 break;
             case VertexType::normal:
-                m_normVertex.push_back(vertexData);
+                    t_ss >> normal.x;
+                    t_ss >> normal.y;
+                    t_ss >> normal.z;
+                    m_normals.push_back(normal);
                 break;
         }
 }
@@ -99,42 +107,36 @@ void ObjParser::parseFaces(std::istringstream& t_ss)
     while (t_ss.rdbuf()->in_avail())
     {
         t_ss >> buf;
-        size_t v, vt, vn;
+        size_t v = 0;
+        size_t vt = 0;
+        size_t vn = 0;
         sscanf(buf.data(),"%ld/%ld/%ld", &v, &vt, &vn);
-        if (v <= 0  || v > m_posVertex.size() || vt > m_textVertex.size()
-                || vn > m_normVertex.size())
+        if (v > m_positions.size() || vt > m_textCoords.size()
+                || vn > m_normals.size())
         {
-            throw("Error: unknown vertex index");
+            throw(std::invalid_argument("Error: unknown vertex index"));
         }
-        m_faces.push_back({m_posVertex.at(v - 1),
-                m_textVertex.at(vt - 1),
-                m_normVertex.at(vn - 1)});
+
+        Vertex vertex;
+        static unsigned int indice = 0;
+        vertex.v = m_positions.at(v - 1);
+        if (vt)
+            vertex.vt = m_textCoords.at(vt - 1);
+        if (vn)
+            vertex.vn = m_normals.at(vn - 1);
+
+        m_vertices.push_back(vertex);
+        m_indices.push_back(indice);
+        indice++;
     }
 }
 
-void ObjParser::printParsedFile(void) const
+const std::vector<SCOP::Vertex>& ObjParser::getVertices(void) const
 {
-    std::cout << "mrllib: " << m_mtllibPath << std::endl;
-    std::cout << "o: " << m_objName << std::endl;
-    for (std::vector<Vertex>::const_iterator it = m_posVertex.begin(); it != m_posVertex.end(); ++it)
-    {
-        std::cout << "v: ";
-        printVertex(*it);
-    }
-    for (std::vector<Vertex>::const_iterator it = m_textVertex.begin(); it != m_textVertex.end(); ++it)
-    {
-        std::cout << "vt: ";
-        printVertex(*it);
-    }
-    for (std::vector<Vertex>::const_iterator it = m_normVertex.begin(); it != m_normVertex.end(); ++it)
-    {
-        std::cout << "vn: ";
-        printVertex(*it);
-    }
-    std::cout << "usemtl: " << m_usemtl << std::endl;
+    return m_vertices;
 }
 
-void ObjParser::printVertex(const Vertex& t_vertex) const
+const std::vector<unsigned int>& ObjParser::getIndices(void) const
 {
-    std::cout << t_vertex.x << "," << t_vertex.y << "," << t_vertex.z << std::endl;
+    return m_indices;
 }
