@@ -2,9 +2,12 @@
 #include <cassert>
 
 #include "Window.h"
-#include "app.h"
+#include "App.h"
 #include "Shader.h"
 
+#include "VAO.h"
+#include "VBO.h"
+#include "EBO.h"
 
 using SCOP::Application;
 
@@ -35,40 +38,33 @@ void Application::launchGameLoop()
     Shader shaders("./source/shader/shadersGlsl/vertexShader.glsl",
                     "./source/shader/shadersGlsl/fragmentShader.glsl");
 
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
+    std::vector<Vertex>& vertices =  m_3dParser.getVertices();
+    std::vector<unsigned int>& indices = m_3dParser.getIndices();
 
-    glBindVertexArray(VAO);
+    VAO vao;
+    VBO vbo(&vertices[0], sizeof(Vertex) * vertices.size());
+    EBO ebo(&indices[0], sizeof(unsigned int) * indices.size());
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    const std::vector<Vertex>& vertices =  m_3dParser.getVertices();
-    const std::vector<unsigned int>& indices = m_3dParser.getIndices();
+    vao.bind();
+    ebo.bind();
+    vao.linkVBO(vbo);
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(VAO);
-
+    glBindVertexArray(0);
+    
 	while(!window.isClosed())
 	{
 		glClearColor(0, 0, 1, 0);
 		glClear(GL_COLOR_BUFFER_BIT);
 
         shaders.useProgram();
-        glBindVertexArray(VAO);
+        vao.bind();
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
 		window.checkKeysInputs();
 		window.update();
 	}
+    vao.deleteBuf();
+    vbo.deleteBuf();
+    ebo.deleteBuf();    
+    shaders.deleteProgram();
 }

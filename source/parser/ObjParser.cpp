@@ -131,12 +131,12 @@ void ObjParser::parseFaces(std::istringstream& t_ss)
     }
 }
 
-const std::vector<SCOP::Vertex>& ObjParser::getVertices(void) const
+std::vector<SCOP::Vertex>& ObjParser::getVertices(void)
 {
     return m_vertices;
 }
 
-const std::vector<unsigned int>& ObjParser::getIndices(void) const
+std::vector<unsigned int>& ObjParser::getIndices(void)
 {
     return m_indices;
 }

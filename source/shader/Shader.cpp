@@ -60,3 +60,8 @@ void Shader::useProgram() const
 {
     glUseProgram(m_programId);
 }
+
+void Shader::deleteProgram() const
+{
+    glDeleteProgram(m_programId);
+}

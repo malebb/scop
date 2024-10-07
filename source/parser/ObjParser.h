@@ -30,8 +30,8 @@ namespace SCOP
             ObjParser();
             ObjParser(const std::string& t_objPath);
             
-            [[nodiscard]] const std::vector<Vertex>& getVertices(void) const;
-            [[nodiscard]] const std::vector<unsigned int>& getIndices(void) const;
+            [[nodiscard]] std::vector<Vertex>& getVertices(void);
+            [[nodiscard]] std::vector<unsigned int>& getIndices(void);
 
         private:
             void parseFaces(std::istringstream& t_ss);

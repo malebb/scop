@@ -1,5 +1,5 @@
 #include "Window.h"
-#include "app.h"
+#include "App.h"
 
 using SCOP::Window;
 

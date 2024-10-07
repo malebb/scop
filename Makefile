@@ -2,16 +2,20 @@ CXX = clang++
 CC = gcc
 
 SRC = ./source/main.cpp \
-	  ./source/app/app.cpp \
+	  ./source/app/App.cpp \
 	  ./source/window/Window.cpp \
 	  ./source/parser/ObjParser.cpp \
-	  ./source/shader/Shader.cpp
+	  ./source/shader/Shader.cpp \
+	  ./source/buffers/VBO.cpp \
+	  ./source/buffers/VAO.cpp \
+	  ./source/buffers/EBO.cpp
 
 INC = -I./source/app \
 	  -I./source/window \
 	  -I./source/parser \
 	  -I./source/shader \
-	  -I./source/math
+	  -I./source/math \
+	  -I./source/buffers
 
 OBJ = $(SRC:.cpp=.o)
 
