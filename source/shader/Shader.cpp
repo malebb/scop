@@ -56,6 +56,12 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath)
     glLinkProgram(m_programId);
 }
 
+void Shader::setMat4(struct Math::mat4 t_mat, const std::string& t_name) const
+{
+    unsigned int location = glGetUniformLocation(m_programId, t_name.c_str());
+    glUniformMatrix4fv(location, 1, GL_FALSE, t_mat.data[0]);
+}
+
 void Shader::useProgram() const
 {
     glUseProgram(m_programId);

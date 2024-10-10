@@ -34,7 +34,7 @@ std::unique_ptr<Application>& Application::initApplication(int argc, char **argv
 
 void Application::launchGameLoop()
 {
-	SCOP::Window window(800, 600);
+	SCOP::Window window(800, 800);
     Shader shaders("./source/shader/shadersGlsl/vertexShader.glsl",
                     "./source/shader/shadersGlsl/fragmentShader.glsl");
 
@@ -51,12 +51,17 @@ void Application::launchGameLoop()
 
     glBindVertexArray(0);
     
+    Math::mat4 model = Math::mat4(1.0f);
+
+    model = Math::scale(model, Math::vec3(0.5f, 0.5f, 0.5f));
+
 	while(!window.isClosed())
 	{
 		glClearColor(0, 0, 1, 0);
 		glClear(GL_COLOR_BUFFER_BIT);
 
         shaders.useProgram();
+        shaders.setMat4(model, "model");
         vao.bind();
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
