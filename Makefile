@@ -28,7 +28,6 @@ GLAD_LIBRARY = -L$(GLAD_LIB)
 CXXFLAGS = -Wall -Werror -Wextra -std=c++17 $(INCLUDES) -g
 LDFLAGS = $(GLFW_LIBRARY) -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi -ldl $(GLAD_LIBRARY) -lglad
 
-
 GLFW = ./lib/glfw
 GLFW_INC = $(GLFW)/include
 GLFW_LIB = $(GLFW)/build/src
@@ -48,7 +47,7 @@ $(TARGET): $(OBJ)
 clean: 
 	rm -f $(OBJ) $(TARGET)
 
-init_linux:
+init_blank_linux:
 
 	sudo apt update -y
 	# Dependencies for X11
@@ -59,6 +58,17 @@ init_linux:
 
 	# Compile glfw library
 	sudo apt install cmake
+	cmake -S $(GLFW) -B $(GLFW)/build
+	make -C $(GLFW_LIB)
+
+	# Compile glad library
+	$(CC) -c $(GLAD_SRC)/glad.c -I $(GLAD_INC) -o $(GLAD_SRC)/glad.o
+	mkdir -p $(GLAD_LIB)
+	ar rcs $(GLAD_LIB)/libglad.a $(GLAD_SRC)/glad.o
+
+init_linux:
+
+	# Compile glfw library
 	cmake -S $(GLFW) -B $(GLFW)/build
 	make -C $(GLFW_LIB)
 
